@@ -15,41 +15,45 @@ function getComputerChoice() {
 }
 
 function convertToWord(letter) {
-    if(letter == 'r') return "Rock";
-    if(letter == 'p') return "Paper";
-    return "Scissor";
+    switch (letter) {
+        case 'r':
+            return "Rock";
+            break;
+        case 'p':
+            return "Paper";
+            break;
+        case 's':
+            return "Scissor";
+            break;
+        default:
+            return "error";
+            break;
+    }
 }
 
 function win(userChoice, computerChoice) {
-    const smallUserWord = "user".fontsize(3).sup();
-    const smallCompWord = "comp".fontsize(3).sup();
     const userChoice_div = document.getElementById(userChoice);
     userScore++;
     userScore_span.innerHTML = userScore;
     computerScore_span.innerHTML = computerScore;
-    result_p.innerHTML = `${convertToWord(userChoice)}${smallUserWord} beats ${convertToWord(computerChoice)}${smallCompWord}. You win!`;
+    result_p.innerHTML = `${convertToWord(userChoice)} beats ${convertToWord(computerChoice)}. You win!`;
     userChoice_div.classList.add('green-glow');
     setTimeout(function() { document.getElementById(userChoice).classList.remove('green-glow')}, 300);
 }
 
-
 function lose(userChoice, computerChoice) {
-    const smallUserWord = "user".fontsize(3).sup();
-    const smallCompWord = "comp".fontsize(3).sup();
     const userChoice_div = document.getElementById(userChoice);
     computerScore++;
     userScore_span.innerHTML = userScore;
     computerScore_span.innerHTML = computerScore;
-    result_p.innerHTML = `${convertToWord(userChoice)}${smallUserWord} loses to ${convertToWord(computerChoice)}${smallCompWord}. You lose!`;
+    result_p.innerHTML = `${convertToWord(userChoice)} loses to ${convertToWord(computerChoice)}. You lose!`;
     userChoice_div.classList.add('red-glow');
     setTimeout(function() { document.getElementById(userChoice).classList.remove('red-glow')}, 300);
 }
 
 function draw(userChoice, computerChoice) {
-    const smallUserWord = "user".fontsize(3).sup();
-    const smallCompWord = "comp".fontsize(3).sup();
     const userChoice_div = document.getElementById(userChoice);
-    result_p.innerHTML = `${convertToWord(userChoice)}${smallUserWord} equals ${convertToWord(computerChoice)}${smallCompWord}. Its a draw!`;
+    result_p.innerHTML = `${convertToWord(userChoice)} equals ${convertToWord(computerChoice)}. Its a draw!`;
     userChoice_div.classList.add('gray-glow');
     setTimeout(function() { document.getElementById(userChoice).classList.remove('gray-glow')}, 300);
 }
@@ -58,35 +62,27 @@ function game(userChoice) {
     const computerChoice = getComputerChoice();
     switch (userChoice + computerChoice) {
         case "rs":
-        case "pr":
-        case "sp":
-            win();
-            break;
         case "rp":
+        case "sp":
+            win(userChoice, computerChoice);
+            break;
+        case "pr":
         case "ps":
         case "sr":
-            lose();
+            lose(userChoice, computerChoice);
             break;
         case "rr":
         case "pp":
         case "ss":
-            draw();
+            draw(userChoice, computerChoice);
             break;
     }
 }
 
 function main() {
-    rock_div.addEventListener('click', function() {
-        game("r");
-    })
-
-    paper_div.addEventListener('click', function() {
-        game("p");
-    })
-
-    scissor_div.addEventListener('click', function() {
-        game("s");
-    })
+    rock_div.addEventListener('click', function() { game('r'); })
+    paper_div.addEventListener('click', function() { game('p'); })
+    scissor_div.addEventListener('click', function() { game('s'); })
 }
 
 main();
